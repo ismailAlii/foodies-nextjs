@@ -1,14 +1,28 @@
 import Link from 'next/link';
 import logoImg from '@/assets/logo.png';
-import style from './main-header.module.css';
+import classes from './main-header.module.css';
 import Image from 'next/image';
+import NavLink from './nav-link';
 
 function MainHeader() {
+  const links = [
+    {
+      id: 'meals',
+      href: '/meals',
+      title: 'Browse Meals',
+    },
+    {
+      id: 'community',
+      href: '/community',
+      title: 'Community',
+    },
+  ];
+
   return (
-    <header className={style.header}>
+    <header className={classes.header}>
       <Link
         href='/'
-        className={style.logo}
+        className={classes.logo}
       >
         <Image
           src={logoImg}
@@ -17,14 +31,15 @@ function MainHeader() {
         />
         NextLevel Food
       </Link>
-      <nav className={style.nav}>
+      <nav className={classes.nav}>
         <ul>
-          <li>
-            <Link href='/meals'>Browse Meals</Link>
-          </li>
-          <li>
-            <Link href='/community'>Community</Link>
-          </li>
+          {links.map((link) => {
+            return (
+              <li key={link.id}>
+                <NavLink link={link} />
+              </li>
+            );
+          })}
         </ul>
       </nav>
     </header>
