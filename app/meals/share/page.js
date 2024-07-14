@@ -1,22 +1,16 @@
+'use client';
 import ImagePicker from '@/components/meals/image-picker';
 import classes from './page.module.css';
+import { shareMeal } from '@/lib/actions';
+import MealsFormSubmit from '@/components/meals/meals-form-submit';
+
+import { useFormState } from 'react-dom';
 
 export default function ShareMealPage() {
-  async function shareMeal(formData) {
-    // server function (server action)
-    'use server';
+  const [state, formAction] = useFormState(shareMeal, {
+    message: null,
+  });
 
-    const meal = {
-      creator: formData.get('name'),
-      creator_email: formData.get('email'),
-      title: formData.get('title'),
-      summary: formData.get('summary'),
-      instructions: formData.get('instructions'),
-      image: formData.get('image'),
-    };
-
-    console.log(meal);
-  }
   return (
     <>
       <header className={classes.header}>
@@ -30,7 +24,7 @@ export default function ShareMealPage() {
         <form
           className={classes.form}
           // this only supported in next js
-          action={shareMeal}
+          action={formAction}
         >
           <div className={classes.row}>
             <p>
@@ -39,7 +33,7 @@ export default function ShareMealPage() {
                 type='text'
                 id='name'
                 name='name'
-                required
+                // required
               />
             </p>
             <p>
@@ -48,7 +42,7 @@ export default function ShareMealPage() {
                 type='email'
                 id='email'
                 name='email'
-                required
+                // required
               />
             </p>
           </div>
@@ -58,7 +52,7 @@ export default function ShareMealPage() {
               type='text'
               id='title'
               name='title'
-              required
+              // required
             />
           </p>
           <p>
@@ -67,7 +61,7 @@ export default function ShareMealPage() {
               type='text'
               id='summary'
               name='summary'
-              required
+              // required
             />
           </p>
           <p>
@@ -76,15 +70,16 @@ export default function ShareMealPage() {
               id='instructions'
               name='instructions'
               rows='10'
-              required
+              // required
             ></textarea>
           </p>
           <ImagePicker
             label='Your image'
             name='image'
           />
+          {state.message && <p>{state.message}</p>}
           <p className={classes.actions}>
-            <button type='submit'>Share Meal</button>
+            <MealsFormSubmit />
           </p>
         </form>
       </main>
